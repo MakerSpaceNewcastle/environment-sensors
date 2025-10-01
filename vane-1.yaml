@@ -1,0 +1,31 @@
+esphome:
+  name: vane-1
+
+esp32:
+  board: esp32doit-devkit-v1
+  framework:
+    type: esp-idf
+
+logger:
+
+wifi:
+  ssid: Maker Space
+  password: ""
+
+web_server:
+
+prometheus:
+
+i2c:
+  sda: GPIO32
+  scl: GPIO33
+  scan: true
+
+sensor:
+  - platform: aht10
+    variant: AHT20
+    temperature:
+      name: Temperature
+    humidity:
+      name: Humidity
+    update_interval: 60s
