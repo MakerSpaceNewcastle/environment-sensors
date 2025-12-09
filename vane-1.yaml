@@ -12,9 +12,7 @@ wifi:
   ssid: Maker Space
   password: ""
 
-web_server:
-
-prometheus:
+http_request:
 
 i2c:
   sda: GPIO32
@@ -26,6 +24,18 @@ sensor:
     variant: AHT20
     temperature:
       name: Temperature
+      on_value:
+        then:
+          - http_request.post:
+              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
+              body: !lambda |-
+                return ((std::string) "temperature{node=\"vane-1\"} " + to_string(x) + "\n").c_str();
     humidity:
       name: Humidity
+      on_value:
+        then:
+          - http_request.post:
+              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
+              body: !lambda |-
+                return ((std::string) "humidity{node=\"vane-1\"} " + to_string(x) + "\n").c_str();
     update_interval: 60s
