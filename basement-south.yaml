@@ -6,13 +6,12 @@ esp32:
   framework:
     type: esp-idf
 
+api:
 logger:
 
 wifi:
   ssid: Maker Space
   password: ""
-
-http_request:
 
 i2c:
   sda: GPIO32
@@ -29,48 +28,18 @@ sensor:
   - platform: aht10
     variant: AHT20
     temperature:
-      name: "North Basement Temperature"
-      on_value:
-        then:
-          - http_request.post:
-              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-              body: !lambda |-
-                return ((std::string) "temperature{node=\"basement-south\"} " + to_string(x) + "\n").c_str();
+      name: "Temperature"
     humidity:
-      name: "North Basement Humidity"
-      on_value:
-        then:
-          - http_request.post:
-              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-              body: !lambda |-
-                return ((std::string) "humidity{node=\"basement-south\"} " + to_string(x) + "\n").c_str();
+      name: "Humidity"
     update_interval: 60s
 
   - platform: pmsx003
     type: PMSX003
     pm_1_0:
-      name: "North Basement PM1 Concentration"
-      on_value:
-        then:
-          - http_request.post:
-              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-              body: !lambda |-
-                return ((std::string) "pm_1_0{node=\"basement-south\"} " + to_string(x) + "\n").c_str();
+      name: "PM1 Concentration"
     pm_2_5:
-      name: "North Basement PM2.5 Concentration"
-      on_value:
-        then:
-          - http_request.post:
-              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-              body: !lambda |-
-                return ((std::string) "pm_2_5{node=\"basement-south\"} " + to_string(x) + "\n").c_str();
+      name: "PM2.5 Concentration"
     pm_10_0:
-      name: "North Basement PM10 Concentration"
-      on_value:
-        then:
-          - http_request.post:
-              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-              body: !lambda |-
-                return ((std::string) "pm_10_0{node=\"basement-south\"} " + to_string(x) + "\n").c_str();
+      name: "PM10 Concentration"
     uart_id: pm_uart
     update_interval: 60s

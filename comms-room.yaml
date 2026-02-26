@@ -16,9 +16,8 @@ ethernet:
   phy_addr: 0
   power_pin: GPIO12
 
+api:
 logger:
-
-http_request:
 
 one_wire:
   - platform: gpio
@@ -27,33 +26,15 @@ one_wire:
 sensor:
   - platform: dallas_temp
     address: 0xd63ce1e380a63428
-    name: board_temperature
+    name: Board Temperature
     update_interval: 60s
-    on_value:
-      then:
-        - http_request.post:
-            url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-            body: !lambda |-
-              return ((std::string) "temperature{node=\"comms-room\", sensor=\"board\"} " + to_string(x) + "\n").c_str();
 
   - platform: dallas_temp
     address: 0x953c1ff648a2f028
-    name: temperature_1
+    name: Temperature 1
     update_interval: 60s
-    on_value:
-      then:
-        - http_request.post:
-            url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-            body: !lambda |-
-              return ((std::string) "temperature{node=\"comms-room\", sensor=\"1\"} " + to_string(x) + "\n").c_str();
 
   - platform: dallas_temp
     address: 0x0d3ce1e3817d8828
-    name: temperature_2
+    name: Temperature 2
     update_interval: 60s
-    on_value:
-      then:
-        - http_request.post:
-            url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-            body: !lambda |-
-              return ((std::string) "temperature{node=\"comms-room\", sensor=\"2\"} " + to_string(x) + "\n").c_str();

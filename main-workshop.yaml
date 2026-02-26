@@ -11,13 +11,12 @@ esp32:
   framework:
     type: esp-idf
 
+api:
 logger:
 
 wifi:
   ssid: Maker Space
   password: ""
-
-http_request:
 
 i2c:
   sda: GPIO32
@@ -35,20 +34,8 @@ sensor:
     variant: AHT20
     temperature:
       name: Temperature
-      on_value:
-        then:
-          - http_request.post:
-              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-              body: !lambda |-
-                return ((std::string) "temperature{node=\"main-workshop\"} " + to_string(x) + "\n").c_str();
     humidity:
       name: Humidity
-      on_value:
-        then:
-          - http_request.post:
-              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-              body: !lambda |-
-                return ((std::string) "humidity{node=\"main-workshop\"} " + to_string(x) + "\n").c_str();
     update_interval: 60s
 
   - platform: senseair
@@ -56,9 +43,3 @@ sensor:
     uart_id: co2_uart
     co2:
       name: co2
-      on_value:
-        then:
-          - http_request.post:
-              url: "https://environment-sensor:PASSWORD@telemetry.makerspace.org.uk/environment-sensor"
-              body: !lambda |-
-                return ((std::string) "co2{node=\"main-workshop\"} " + to_string(x) + "\n").c_str();
